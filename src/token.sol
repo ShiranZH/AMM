@@ -13,6 +13,12 @@ contract KafkaToken {
         uint256 _value
     );
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    
+    function mint(uint _amount) public returns (bool success) {
+        _totalSupply += _amount;
+        balances[msg.sender] += _amount;
+        return true;
+    }
 
     function totalSupply() public view returns (uint theTotalSupply) {
         theTotalSupply = _totalSupply;
