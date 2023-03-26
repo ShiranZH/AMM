@@ -7,6 +7,10 @@ contract KafkaToken {
     uint256 _totalSupply = 500;
     address public owner;
 
+    constructor() {
+        owner = msg.sender;
+    }
+
     event Approval(
         address indexed _owner,
         address indexed _spender,
