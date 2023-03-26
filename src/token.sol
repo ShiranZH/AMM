@@ -9,6 +9,7 @@ contract KafkaToken {
 
     constructor() {
         owner = msg.sender;
+        balances[owner] = _totalSupply;
     }
 
     event Approval(
