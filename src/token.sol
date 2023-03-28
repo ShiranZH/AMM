@@ -4,12 +4,12 @@ pragma solidity ^0.8.17;
 contract KafkaToken {
     mapping(address => uint256) balances;
     mapping(address => mapping(address => uint256)) allowed;
-    uint256 _totalSupply = 500;
+    uint256 _total_supply = 500;
     address public owner;
 
     constructor() {
         owner = msg.sender;
-        balances[owner] = _totalSupply;
+        balances[owner] = _total_supply;
     }
 
     event Approval(
@@ -18,16 +18,16 @@ contract KafkaToken {
         uint256 _value
     );
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    
+
     function mint(uint _amount) public returns (bool success) {
-        _totalSupply += _amount;
+        _total_supply += _amount;
         balances[msg.sender] += _amount;
         return true;
     }
 
-    function totalSupply() public view returns (uint theTotalSupply) {
-        theTotalSupply = _totalSupply;
-        return theTotalSupply;
+    function totalSupply() public view returns (uint total_supply) {
+        total_supply = _total_supply;
+        return total_supply;
     }
 
     function balanceOf(address _owner) public view returns (uint balance) {
@@ -47,7 +47,6 @@ contract KafkaToken {
         if (balances[msg.sender] >= _amount) {
             balances[msg.sender] -= _amount;
             balances[_to] += _amount;
-
             emit Transfer(msg.sender, _to, _amount);
             return true;
         } else {
