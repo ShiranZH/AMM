@@ -4,11 +4,11 @@
 
 ### KafkaToken
 
-I implemented a simple token called KafkaToken after `IERC20`. It has basic function of `mint`, `approve`, `transfer` and `transferFrom`.
+I implemented a simple token called KafkaToken after `IERC20` interface. It has basic function of `mint`, `approve`, `transfer` and `transferFrom`.
 
 With `mint` function, everyone who participates in this token can mint any amount they want. By calling `balanceOf` function, users can know how much token they own. By calling `totalSupply` function, users can have an overview of the total token supply.
 
-With `approve` function, users can add any smart contracts they want to interact with into the allowance list.
+With `approve` function, users can add any smart contracts they want to interact with into the allowance list. By calling `allowance` function, users can know what contracts they have approved.
 
 With `transfer` and `transferFrom`, token holders can transfer to any address and withdraw their token from all the contracts that they have approved.
 
