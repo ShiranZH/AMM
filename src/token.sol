@@ -1,7 +1,38 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract KafkaToken {
+interface IERC20 {
+    function totalSupply() external view returns (uint256);
+
+    function balanceOf(address account) external view returns (uint256);
+
+    function allowance(
+        address owner,
+        address spender
+    ) external view returns (uint256);
+
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
+
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    function transferFrom(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
+}
+
+contract KafkaToken is IERC20 {
     mapping(address => uint256) balances;
     mapping(address => mapping(address => uint256)) allowed;
     uint256 _total_supply = 500;
@@ -11,13 +42,6 @@ contract KafkaToken {
         owner = msg.sender;
         balances[owner] = _total_supply;
     }
-
-    event Approval(
-        address indexed _owner,
-        address indexed _spender,
-        uint256 _value
-    );
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
     function mint(uint _amount) public returns (bool success) {
         _total_supply += _amount;
@@ -44,14 +68,14 @@ contract KafkaToken {
     }
 
     function transfer(address _to, uint _amount) public returns (bool success) {
-        if (balances[msg.sender] >= _amount) {
-            balances[msg.sender] -= _amount;
-            balances[_to] += _amount;
-            emit Transfer(msg.sender, _to, _amount);
-            return true;
-        } else {
-            return false;
-        }
+        require(
+            _amount <= balances[msg.sender],
+            "amount exceeds account balances"
+        );
+        balances[msg.sender] -= _amount;
+        balances[_to] += _amount;
+        emit Transfer(msg.sender, _to, _amount);
+        return true;
     }
 
     function transferFrom(
@@ -59,19 +83,17 @@ contract KafkaToken {
         address _to,
         uint _amount
     ) public returns (bool success) {
-        if (
-            balances[_from] >= _amount &&
-            allowed[_from][msg.sender] >= _amount &&
-            _amount > 0 &&
-            balances[_to] + _amount > balances[_to]
-        ) {
-            balances[_from] -= _amount;
-            balances[_to] += _amount;
-            emit Transfer(_from, _to, _amount);
-            return true;
-        } else {
-            return false;
-        }
+        require(_amount > 0, "invalid amount");
+        require(_amount <= balances[_from], "amount exceeds account balances");
+        require(
+            _amount <= allowed[_from][msg.sender],
+            "amount exceeds allowance"
+        );
+        balances[_from] -= _amount;
+        allowed[_from][msg.sender] -= _amount;
+        balances[_to] += _amount;
+        emit Transfer(_from, _to, _amount);
+        return true;
     }
 
     function allowance(
