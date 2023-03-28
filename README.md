@@ -1,4 +1,6 @@
-# AMM
+# Capstone Project, FRE-GY 9163 Blockchain and Cryptocurrency
+
+## Developer: Shiran Zhang, sz3739@nyu.edu
 
 ## Implementation
 
@@ -21,3 +23,7 @@ With calculation, we can see that when users want to trade from token A to token
 When users want to add liquidity, the amount of shares to mint follow the rule of `shares_to_mint = (dx + dy) * total_shares_before_mint / (X + Y)`.
 
 When users want to remove liquidity, the amount of shares to burn follow the rule of `dx = shares_to_burn / total_shares * X` and `dy = shares_to_burn / total_shares * Y`.
+
+## How to Run
+
+I have only deployed KafkaToken on Goerli Testnet due to limited account ETH. Here's the etherscan link: https://goerli.etherscan.io/tx/0x9a94d82f2991ea47f5ce69895c32bc685437a4649bf72407f337ad6d9dc37bf8.
